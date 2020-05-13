@@ -3,7 +3,7 @@ name:                cabal-appimage
 version:             0.1.0
 synopsis:            Cabal support for creating AppImage applications
 description:         This package provides a build hook automating the
-                     creation of an AppImage bundles.
+                     creation of AppImage bundles.
 homepage:            https://github.com/gbrsales/cabal-appimage
 bug-reports:         https://github.com/gbrsales/cabal-appimage/issues
 license:             AGPL-3.0-only
