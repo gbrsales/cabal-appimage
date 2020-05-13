@@ -1,0 +1,23 @@
+cabal-version:       2.4
+name:                cabal-appimage
+version:             0.1.0
+synopsis:            Cabal support for creating AppImage applications
+description:         This package provides a build hook automating the
+                     creation of an AppImage bundles.
+homepage:            https://github.com/gbrsales/cabal-appimage
+bug-reports:         https://github.com/gbrsales/cabal-appimage/issues
+license:             AGPL-3.0-only
+license-file:        LICENSE
+author:              Gabriele Sales
+maintainer:          gbrsales@gmail.com
+copyright:           2020 Gabriele Sales
+category:            Development
+extra-source-files:  CHANGELOG.md
+
+library
+  exposed-modules:     Distribution.AppImage
+  -- other-modules:
+  build-depends:       base >=4.13.0.0 && <4.14,
+                       Cabal >=3.0.1.0 && <3.1
+  hs-source-dirs:      src
+  default-language:    Haskell2010
