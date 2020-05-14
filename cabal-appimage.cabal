@@ -1,4 +1,4 @@
-cabal-version:       2.4
+cabal-version:       2.0
 name:                cabal-appimage
 version:             0.1.0
 synopsis:            Cabal support for creating AppImage applications
@@ -16,8 +16,8 @@ extra-source-files:  CHANGELOG.md
 
 library
   exposed-modules:     Distribution.AppImage
-  build-depends:       base >=4.13.0.0 && <4.14,
-                       Cabal >=3.0.1.0 && <3.1,
+  build-depends:       base >=4.11.0.0 && <4.15,
+                       Cabal >=2.4.1.0 && <3.2,
                        filepath >=1.4.2.1 && <1.5
   hs-source-dirs:      src
   default-language:    Haskell2010
