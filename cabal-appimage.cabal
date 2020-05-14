@@ -6,7 +6,7 @@ description:         This package provides a build hook automating the
                      creation of AppImage bundles.
 homepage:            https://github.com/gbrsales/cabal-appimage
 bug-reports:         https://github.com/gbrsales/cabal-appimage/issues
-license:             AGPL-3.0-only
+license:             AGPL-3
 license-file:        LICENSE
 author:              Gabriele Sales
 maintainer:          gbrsales@gmail.com
