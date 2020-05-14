@@ -1,5 +1,5 @@
 # Revision history for cabal-appimage
 
-## 0.1.0 -- YYYY-mm-dd
+## 0.1.0 -- 2020-05-14
 
-* First version. Released on an unsuspecting world.
+* Initial release.
