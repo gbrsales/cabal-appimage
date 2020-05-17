@@ -2,7 +2,7 @@
 Module:    Distribution.AppImage
 Copyright: 2020 Gabriele Sales
 
-This bundle provides a custom build hook that automatically wraps executables
+This module provides a custom build hook that automatically wraps executables
 inside AppImage bundles.
 
 Internally, it calls the @appimagetool@ and @linuxdeploy@ utilities which must
@@ -46,7 +46,7 @@ data AppImage = AppImage {
   } deriving (Eq, Show)
 
 
--- | Post-build hook for AppImage bundles. Does nothing if the OS is not Linux.
+-- | Hook for building AppImage bundles. Does nothing if the OS is not Linux.
 --
 -- Use this function as a @postBuild@ hook.
 appImageBuildHook

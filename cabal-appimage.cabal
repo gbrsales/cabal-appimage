@@ -1,6 +1,6 @@
 cabal-version:       2.0
 name:                cabal-appimage
-version:             0.1.0
+version:             0.2.0
 synopsis:            Cabal support for creating AppImage applications
 description:         This package provides a build hook automating the
                      creation of AppImage bundles.
@@ -22,4 +22,4 @@ library
                        filepath >=1.4.2.1 && <1.5
   hs-source-dirs:      src
   default-language:    Haskell2010
-  ghc-options:         -fno-warn-name-shadowing
+  ghc-options:         -Wall -fno-warn-name-shadowing
