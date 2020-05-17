@@ -11,7 +11,7 @@ license-file:        LICENSE
 author:              Gabriele Sales
 maintainer:          gbrsales@gmail.com
 copyright:           2020 Gabriele Sales
-category:            Development
+category:            Development, Distribution, Linux
 extra-source-files:  CHANGELOG.md
 build-type:          Simple
 
