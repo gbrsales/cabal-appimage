@@ -13,11 +13,13 @@ be already installed on the system.
 
 module Distribution.AppImage
   ( AppImage(..)
+  , AppDirCustomize
   , appImageBuildHook
   )
 where
 
 import           Control.Monad
+import           Data.Maybe
 import           Data.String
 import           Distribution.PackageDescription
 import           Distribution.Simple
@@ -35,15 +37,25 @@ data AppImage = AppImage {
   -- | Application name. The AppImage bundle will be produced in
   -- @dist\/build\//appName/.AppImage@ and will contain the executable
   -- /appName/.
-  appName      :: String,
+  appName         :: String,
   -- | Path to desktop file.
-  appDesktop   :: FilePath,
+  appDesktop      :: FilePath,
   -- | Application icons.
-  appIcons     :: [FilePath],
+  appIcons        :: [FilePath],
   -- | Other resources to bundle. Stored in the @\usr\/share\//appName/@
   -- directory inside the image.
-  appResources :: [FilePath]
-  } deriving (Eq, Show)
+  appResources    :: [FilePath],
+  -- | Hook to customize the generated @AppDir@ before final packaging.
+  appDirCustomize :: Maybe AppDirCustomize
+  }
+
+type AppDirCustomize
+  = FilePath   -- ^ AppDir path.
+ -> Args       -- ^ Other parameters as defined in 'Distribution.Simple.postBuild'.
+ -> BuildFlags
+ -> PackageDescription
+ -> LocalBuildInfo
+ -> IO ()
 
 
 -- | Hook for building AppImage bundles. Does nothing if the OS is not Linux.
@@ -71,6 +83,7 @@ makeBundle args flags pkg buildInfo app@AppImage{..} = do
   withTempDirectory verb bdir "appimage." $ \appDir -> do
     deployExe (bdir </> appName </> appName) app appDir verb
     bundleFiles appResources (appDir </> "usr" </> "share" </> appName) verb
+    fromMaybe noCustomization appDirCustomize appDir args flags pkg buildInfo
     bundleApp appDir verb
 
 hasExecutable :: PackageDescription -> String -> Bool
@@ -99,6 +112,10 @@ bundleApp appDir verb = do
   let (wdir, name) = splitFileName appDir
   runProgramInvocation verb $
     (programInvocation prog [name]) { progInvokeCwd = Just wdir }
+
+noCustomization :: AppDirCustomize
+noCustomization _ _ _ _ _ = return ()
+
 
 findProg :: String -> Verbosity -> IO ConfiguredProgram
 findProg name verb = do
