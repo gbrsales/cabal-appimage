@@ -2,11 +2,12 @@
 Module:    Distribution.AppImage
 Copyright: 2020 Gabriele Sales
 
-This module provides a custom build hook that automatically wraps executables
-inside AppImage bundles.
+This module provides a custom build hook for automating the creation of AppImage
+bundles.
 
-Internally, it calls the @appimagetool@ and @linuxdeploy@ utilities which must
-be already installed on the system.
+Internally, it calls the [appimagetool](https://github.com/AppImage/AppImageKit)
+and [linuxdeploy](https://github.com/linuxdeploy/linuxdeploy) utilities which
+must be already present on the system.
 -}
 
 {-# LANGUAGE RecordWildCards #-}
