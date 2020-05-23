@@ -38,10 +38,10 @@ data AppImage = AppImage {
   appName      :: String,
   -- | Path to desktop file.
   appDesktop   :: FilePath,
-  -- | Path to icon file.
-  appIcon      :: FilePath,
-  -- | Other files to include in the application bundle. Will be copied in
-  -- the @\/usr\/share\//appName/@ directory inside the image.
+  -- | Application icons.
+  appIcons     :: [FilePath],
+  -- | Other resources to bundle. Stored in the @\usr\/share\//appName/@
+  -- directory inside the image.
   appResources :: [FilePath]
   } deriving (Eq, Show)
 
@@ -56,42 +56,42 @@ appImageBuildHook
   -> PackageDescription
   -> LocalBuildInfo
   -> IO ()
-appImageBuildHook apps _ flags pkg buildInfo =
+appImageBuildHook apps args flags pkg buildInfo =
   when (buildOS == Linux) $
-    let bdir = buildDir buildInfo
-        verb = fromFlagOrDefault normal (buildVerbosity flags)
-    in forM_ apps (makeBundle pkg bdir verb)
+    mapM_ (makeBundle args flags pkg buildInfo) apps
 
-makeBundle :: PackageDescription -> FilePath -> Verbosity -> AppImage -> IO ()
-makeBundle pkg bdir verb app@AppImage{..} = do
+makeBundle :: Args -> BuildFlags -> PackageDescription -> LocalBuildInfo -> AppImage -> IO ()
+makeBundle args flags pkg buildInfo app@AppImage{..} = do
+  let bdir = buildDir buildInfo
+      verb = fromFlagOrDefault normal (buildVerbosity flags)
   unless (hasExecutable pkg appName) $
     die' verb ("No executable defined for the AppImage bundle: " ++ appName)
+  when (null appIcons) $
+    die' verb ("No icon defined for the AppImage bundle: " ++ appName)
   withTempDirectory verb bdir "appimage." $ \appDir -> do
-    let exe   = bdir </> appName </> appName
-        share = appDir </> "usr" </> "share" </> appName
-    createDirectoryIfMissingVerbose verb True share
-    deployExe app appDir exe verb
-    copyResources appResources share verb
+    deployExe (bdir </> appName </> appName) app appDir verb
+    bundleFiles appResources (appDir </> "usr" </> "share" </> appName) verb
     bundleApp appDir verb
 
 hasExecutable :: PackageDescription -> String -> Bool
 hasExecutable pkg name =
   any (\e -> exeName e == fromString name) (executables pkg)
 
-deployExe :: AppImage -> FilePath -> FilePath -> Verbosity -> IO ()
-deployExe AppImage{..} appDir exe verb = do
+deployExe :: FilePath -> AppImage -> FilePath -> Verbosity -> IO ()
+deployExe exe AppImage{..} appDir verb = do
   prog <- findProg "linuxdeploy" verb
-  runProgram verb prog
+  runProgram verb prog $
     [ "--appdir=" ++ appDir
     , "--executable=" ++ exe
-    , "--desktop-file=" ++ appDesktop
-    , "--icon-file=" ++ appIcon
-    ]
+    , "--desktop-file=" ++ appDesktop ] ++
+    map ("--icon-file=" ++) appIcons
 
-copyResources :: [FilePath] -> FilePath -> Verbosity -> IO ()
-copyResources resources dest verb = mapM_ copy resources
+bundleFiles :: [FilePath] -> FilePath -> Verbosity -> IO ()
+bundleFiles files dest verb = prepare >> mapM_ copy files
   where
-    copy res = copyFileVerbose verb res (dest </> takeFileName res)
+    prepare = createDirectoryIfMissingVerbose verb True dest
+
+    copy file = copyFileVerbose verb file (dest </> takeFileName file)
 
 bundleApp :: FilePath -> Verbosity -> IO ()
 bundleApp appDir verb = do
