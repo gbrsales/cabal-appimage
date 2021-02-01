@@ -1,6 +1,11 @@
 # Revision history for cabal-appimage
 
 
+## 0.3.0.1 -- 2021-01-01
+
+* Build on GHC 8.10.3.
+
+
 ## 0.3.0.0 -- 2020-05-24
 
 * Support for multiple icons.
