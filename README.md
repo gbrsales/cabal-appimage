@@ -1,6 +1,6 @@
 # cabal-appimage
 
-[![Build Status](https://travis-ci.org/gbrsales/cabal-appimage.svg?branch=master)](https://travis-ci.org/gbrsales/cabal-appimage)
+![GiHub Actions Build Status](https://github.com/gbrsales/cabal-appimage/workflows/build/badge.svg) [![Travis CI Build Status](https://travis-ci.org/gbrsales/cabal-appimage.svg?branch=master)](https://travis-ci.org/gbrsales/cabal-appimage)
 
 This package provides a build hook for Cabal automating the creation
 of AppImage bundles.
