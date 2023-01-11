@@ -45,7 +45,7 @@ data AppImage = AppImage {
   appIcons        :: [FilePath],
   -- | Other resources to bundle. Stored in the @\usr\/share\//appName/@
   -- directory inside the image.
-  appResources    :: [(FilePath, FilePath)],
+  appResources    :: [(FilePath, Maybe FilePath)],
   -- | Hook to customize the generated @AppDir@ before final packaging.
   appDirCustomize :: Maybe AppDirCustomize
   }
@@ -100,13 +100,13 @@ deployExe exe AppImage{..} appDir verb = do
     , "--desktop-file=" ++ appDesktop ] ++
     map ("--icon-file=" ++) appIcons
 
-bundleFiles :: [(FilePath, FilePath)] -> FilePath -> Verbosity -> IO ()
+bundleFiles :: [(FilePath, Maybe FilePath)] -> FilePath -> Verbosity -> IO ()
 bundleFiles files dest verb = prepare >> mapM_ (uncurry copy) files
   where
     prepare = createDirectoryIfMissingVerbose verb True dest
 
     copy file destfile = do
-      let fp = dest </> destfile
+      let fp = dest </> fromMaybe (takeFileName file) destfile
       createDirectoryIfMissingVerbose verb True $ takeDirectory fp
       copyFileVerbose verb file fp
 
