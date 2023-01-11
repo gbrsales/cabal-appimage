@@ -44,7 +44,10 @@ data AppImage = AppImage {
   -- | Application icons.
   appIcons        :: [FilePath],
   -- | Other resources to bundle. Stored in the @\usr\/share\//appName/@
-  -- directory inside the image.
+  -- directory inside the image. The first 'FilePath' is on the local system.
+  -- The @Maybe 'FilePath'@ is the desired file path relative to
+  -- @\usr\/share\//appName/@, or the directoryless filename in the case of
+  -- 'Nothing'.
   appResources    :: [(FilePath, Maybe FilePath)],
   -- | Hook to customize the generated @AppDir@ before final packaging.
   appDirCustomize :: Maybe AppDirCustomize
