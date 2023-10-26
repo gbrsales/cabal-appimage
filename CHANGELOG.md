@@ -1,5 +1,10 @@
 # Revision history for cabal-appimage
 
+## 0.4.0.2 -- 2023-10-26
+
+* Build with GHC 9.8.
+
+
 ## 0.4.0.0 -- 2023-01-11
 
 * Allow resources to have directory structure (thanks to Sandy Maguire).
