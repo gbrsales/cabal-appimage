@@ -8,11 +8,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        ghc: ['9.4', '9.6', '9.8']
+        ghc: ['9.4', '9.6', '9.8', '9.10']
         os: [ubuntu-latest, macOS-latest, windows-latest]
     name: Build Package
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Haskell
         uses: haskell-actions/setup@v2
         with:
