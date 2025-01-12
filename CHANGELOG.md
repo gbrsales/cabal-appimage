@@ -1,5 +1,9 @@
 # Revision history for cabal-appimage
 
+## 0.4.1.0 -- 2025-01-12
+
+* Build with GHC 9.12.
+
 
 ## 0.4.0.5 -- 2024-09-02
 

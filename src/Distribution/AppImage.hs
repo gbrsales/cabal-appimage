@@ -1,6 +1,6 @@
 {-|
 Module:    Distribution.AppImage
-Copyright: 2020 Gabriele Sales
+Copyright: 2020-2025 Gabriele Sales
 
 This module provides a custom build hook for automating the creation of AppImage
 bundles.
@@ -10,6 +10,7 @@ and [linuxdeploy](https://github.com/linuxdeploy/linuxdeploy) utilities which
 must be already present on the system.
 -}
 
+{-# LANGUAGE CPP             #-}
 {-# LANGUAGE RecordWildCards #-}
 
 module Distribution.AppImage
@@ -78,7 +79,11 @@ appImageBuildHook apps args flags pkg buildInfo =
 
 makeBundle :: Args -> BuildFlags -> PackageDescription -> LocalBuildInfo -> AppImage -> IO ()
 makeBundle args flags pkg buildInfo app@AppImage{..} = do
+#if MIN_VERSION_GLASGOW_HASKELL(9,12,0,0)
+  let bdir = interpretSymbolicPathLBI buildInfo (buildDir buildInfo)
+#else
   let bdir = buildDir buildInfo
+#endif
       verb = fromFlagOrDefault normal (buildVerbosity flags)
   unless (hasExecutable pkg appName) $
     die' verb ("No executable defined for the AppImage bundle: " ++ appName)
