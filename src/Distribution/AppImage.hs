@@ -79,7 +79,7 @@ appImageBuildHook apps args flags pkg buildInfo =
 
 makeBundle :: Args -> BuildFlags -> PackageDescription -> LocalBuildInfo -> AppImage -> IO ()
 makeBundle args flags pkg buildInfo app@AppImage{..} = do
-#if MIN_VERSION_GLASGOW_HASKELL(9,12,0,0)
+#if MIN_VERSION_Cabal(3,14,0)
   let bdir = interpretSymbolicPathLBI buildInfo (buildDir buildInfo)
 #else
   let bdir = buildDir buildInfo
